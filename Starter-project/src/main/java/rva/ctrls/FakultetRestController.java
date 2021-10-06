@@ -67,6 +67,7 @@ public class FakultetRestController {
 	public ResponseEntity<Fakultet> deleteFakultet(@PathVariable Integer id){
 		if(!fakultetRepository.existsById(id))
 			return new ResponseEntity<Fakultet>(HttpStatus.NO_CONTENT);
+		jdbcTemplate.execute("delete from departman where fakultet="+id);
 		fakultetRepository.deleteById(id);
 		if (id == -100)
 			jdbcTemplate.execute(" INSERT INTO \"fakultet\" (\"id\", \"naziv\",\"sediste\")"
