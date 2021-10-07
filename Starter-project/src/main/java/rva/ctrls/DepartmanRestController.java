@@ -2,10 +2,13 @@ package rva.ctrls;
 
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import rva.jpa.Departman;
-import rva.jpa.Status;
+
 import rva.repository.DepartmanRepository;
 
 @RestController
@@ -29,7 +32,7 @@ public class DepartmanRestController {
 	@GetMapping("departman")
 	public Collection<Departman> getDepartmani(){
 		
-		return departmanRepository.findAll();
+		return departmanRepository.findAll();   
 		
 	}
 	
@@ -39,7 +42,7 @@ public class DepartmanRestController {
 	}
 	
 	@GetMapping("departmanNaziv/{naziv}")
-	public Collection<Departman> getDepartmanByNaziv(@PathVariable String naziv) {
+	public Collection<Departman> getDepartmanByNaziv(@PathVariable("naziv") String naziv) {
 		return departmanRepository.findByNazivContainingIgnoreCase(naziv);
 	}
 	
@@ -57,6 +60,20 @@ public class DepartmanRestController {
 		if(!departmanRepository.existsById(departman.getId()))
 			return new ResponseEntity<Departman>(HttpStatus.NO_CONTENT);
 		departmanRepository.save(departman);
+		return new ResponseEntity<Departman>(HttpStatus.OK);
+	}
+	
+	//@Transactional
+	@DeleteMapping("departman/{id}")
+	public ResponseEntity<Departman> deleteDepartman(@PathVariable("id") Integer id){
+		if(!departmanRepository.existsById(id))
+			return new ResponseEntity<Departman>(HttpStatus.NO_CONTENT);
+		jdbcTemplate.execute("delete from student where departman="+id);
+		departmanRepository.deleteById(id);
+		if(id == -100) 
+			jdbcTemplate.execute("INSERT INTO \"departman\" (\"id\",\"naziv\",\"oznaka\",\"fakultet\")"
+					+ "VALUES (-100, 'Test naziv','Test oznaka',-100)");
+		
 		return new ResponseEntity<Departman>(HttpStatus.OK);
 	}
 
