@@ -55,6 +55,7 @@ public class DepartmanRestController {
 		return new ResponseEntity<Departman>(HttpStatus.CONFLICT);
 	}
 	
+	
 	@PutMapping("departman")
 	public ResponseEntity<Departman> updateDepartman(@RequestBody Departman departman) {
 		if(!departmanRepository.existsById(departman.getId()))

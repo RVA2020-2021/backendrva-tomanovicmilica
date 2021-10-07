@@ -72,7 +72,6 @@ public class StudentRestController {
 		return new ResponseEntity<Student>(HttpStatus.OK);
 	}
 	
-	
 	@DeleteMapping("student/{id}")
 	public ResponseEntity<Student> deleteStudent(@PathVariable("id") Integer id){
 		if(!studentRepository.existsById(id))
