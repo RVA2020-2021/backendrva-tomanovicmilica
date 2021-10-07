@@ -10,9 +10,11 @@ import rva.jpa.Student;
 public interface StudentRepository extends JpaRepository<Student, Integer>{
 	
 	
+	
 //	Collection<Student> findbyBrojIndeksaContainingIgnoreCase(String brojIndeksa);
 	
 
+	
 	Collection<Student> findByDepartman (Departman d);
 
 }

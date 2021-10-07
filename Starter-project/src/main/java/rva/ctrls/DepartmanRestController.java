@@ -64,6 +64,7 @@ public class DepartmanRestController {
 		return new ResponseEntity<Departman>(HttpStatus.OK);
 	}
 	
+	
 	//@Transactional
 	@DeleteMapping("departman/{id}")
 	public ResponseEntity<Departman> deleteDepartman(@PathVariable("id") Integer id){
